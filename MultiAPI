@@ -1,0 +1,35 @@
+import json
+import multiprocessing
+import requests
+
+class stl:
+
+    def __init__(self):
+        self.seachurl = ''
+
+        self.headers = {
+            'token': '',
+            'source': '',
+            'Content-Type': 'application/json'
+        }
+
+    def audit(self):
+        payload = json.dumps({"testAmount": 0.02})
+        response = requests.request("POST", self.seachurl, headers=self.headers, data=payload).json()
+        print(response)
+
+
+if __name__ == '__main__':
+
+    processes = []
+
+    for _ in range(3):
+        process_2 = multiprocessing.Process(target=stl().audit)
+        processes.append(process_2)
+        process_2.start()
+
+    for process_2 in processes:
+        process_2.join()
+
+    for _ in range(1000):
+        stl().audit()
